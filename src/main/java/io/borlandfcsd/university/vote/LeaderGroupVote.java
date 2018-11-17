@@ -10,21 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class VoteForGroupLeader implements Voteable{
+public class LeaderGroupVote implements Voteable{
+    private static int idCounter = 0;
+    private int id;
     private String question;
     private List<Answer<Student>> answers;
     private Group group;
     private List<Student> votedStudent = new ArrayList<>();
     private int round = 1;
-    private boolean voteStatus = true;
 
 
-    public VoteForGroupLeader(Group group) {
+
+    public LeaderGroupVote(Group group) {
+        this.id = LeaderGroupVote.idCounter;
         this.group = group;
         this.question = "Who will be leader of group?(Round " + round +")";
 
         answers = new ArrayList<>();
         createAnswers(group.getStudents());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -32,10 +36,30 @@ public class VoteForGroupLeader implements Voteable{
         for(Student student : students){
             Answer<Student> answer = new Answer(student);
             answers.add(answer);
-            student.getVoteList().add(this);
+        }
+        if(round == 1) {
+            group.getVoteList().add(this);
         }
     }
 
+    public void vote(){
+            if(checkVotedStudents()){
+                System.out.println("You already voted. Current results: ");
+                showResults();
+            } else {
+                System.out.println(question);
+
+                printAnswers();
+
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Enter you answer: ");
+                int userAnswer = scanner.nextInt();
+                checkUserAnswer(userAnswer);
+                votedStudent.add(University.getCurrentStudent());
+                finishVoting();
+            }
+
+    }
 
     private void finishVoting() {
         if(group.getStudents().size() == votedStudent.size()){
@@ -43,7 +67,7 @@ public class VoteForGroupLeader implements Voteable{
             if(student != null) {
                 student.setRole(Role.LEADER);
                 group.setLeader(student);
-                voteStatus = false;
+                removeVote();
             }
         }
     }
@@ -86,33 +110,18 @@ public class VoteForGroupLeader implements Voteable{
     private void draw(List<Student> students){
         votedStudent = new ArrayList<>();
         answers = new ArrayList<>();
-        createAnswers(students);
         round++;
+        createAnswers(students);
         this.question = "Who will be leader of group?(Round " + round +")";
-        University.clearUserMenu();
-        University.createUserMenu();
     }
 
-    public void vote(){
-        finishVoting();
-        if(voteStatus) {
-            if(checkVotedStudents()){
-                System.out.println("You already voted. Current results: ");
-                showResults();
-            } else {
-                System.out.println(question);
-
-                printAnswers();
-
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter you answer: ");
-                int userAnswer = scanner.nextInt();
-                checkUserAnswer(userAnswer);
-                votedStudent.add(University.getCurrentStudent());
+    private void removeVote() {
+        List<Voteable> votes = group.getVoteList();
+        for(int i = 0; i< votes.size(); i++){
+            Voteable vote = votes.get(i);
+            if (this.id == vote.getId()){
+                votes.remove(i);
             }
-        } else {
-            System.out.println("VoteForGroupLeader is closed. results:");
-            showResults();
         }
     }
 
@@ -171,4 +180,8 @@ public class VoteForGroupLeader implements Voteable{
         this.question = question;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
 }

@@ -6,7 +6,6 @@ import io.borlandfcsd.university.menu2.commands.LoginCommand;
 import io.borlandfcsd.university.menu2.commands.LogoutCommand;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,6 +31,7 @@ public class Menu {
     private List<Command> defineCommandList(){
         if(University.getInstance().getUser() != null){
             switchSystemCommand(true);
+            updateUserMenu();
             List<Command> commands = new ArrayList<>();
             commands.addAll(systemCommands);
             commands.addAll(userCommands);
@@ -40,6 +40,11 @@ public class Menu {
             switchSystemCommand(false);
             return systemCommands;
         }
+    }
+
+    private void updateUserMenu() {
+        University.clearUserMenu();
+        University.createUserMenu();
     }
 
     private void switchSystemCommand(boolean switcher) {
@@ -51,14 +56,14 @@ public class Menu {
     }
 
     private void printMenu(List<Command> commands) {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("\nMenu:\n");
+        StringBuilder builder = new StringBuilder();
+        builder.append("\nMenu:\n");
         for (int i = 0; i < commands.size(); i++) {
-            Command entry = commands.get(i);
-            String entryFormatted = String.format(MENU_PATTERN, (i + 1), entry.getTitle());
-            buffer.append(entryFormatted);
+            Command command = commands.get(i);
+            String entryFormatted = String.format(MENU_PATTERN, (i + 1), command.getTitle());
+            builder.append(entryFormatted);
         }
-        System.out.print(buffer.toString());
+        System.out.print(builder.toString());
     }
 
     private void getCommandFromUser(List<Command> commandList) {

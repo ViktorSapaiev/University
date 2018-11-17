@@ -1,6 +1,10 @@
 package io.borlandfcsd.university.entity;
 
 
+import io.borlandfcsd.university.vote.LeaderGroupVote;
+import io.borlandfcsd.university.vote.Voteable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
@@ -8,6 +12,7 @@ public class Group {
     private String name;
     private List<Student> students;
     private List<Subject> subjects;
+    private List<Voteable> voteList;
     private Student leader;
 
     public Group(int id, String name, List<Student> students, List<Subject> subjects) {
@@ -15,6 +20,7 @@ public class Group {
         this.name = name;
         this.students = students;
         this.subjects = subjects;
+        this.voteList = new ArrayList<>();
     }
 
     public int getId() {
@@ -31,6 +37,14 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Voteable> getVoteList() {
+        return voteList;
+    }
+
+    public void setVoteList(List<Voteable> voteList) {
+        this.voteList = voteList;
     }
 
     public List<Student> getStudents() {

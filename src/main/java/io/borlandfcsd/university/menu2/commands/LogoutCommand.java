@@ -13,10 +13,5 @@ public class LogoutCommand extends Command {
 
     public void run() {
         University.getInstance().setUser(null);
-        clearUserCommands();
-    }
-
-    private void clearUserCommands(){
-        University.clearUserMenu();
     }
 }

@@ -2,6 +2,7 @@ package io.borlandfcsd.university.dao;
 
 import io.borlandfcsd.university.entity.Group;
 import io.borlandfcsd.university.entity.Student;
+import io.borlandfcsd.university.vote.LeaderGroupVote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class GroupDao {
                 group2.getStudents().add(student);
             }
         }
+        new LeaderGroupVote(group1);
+       // group2.getVoteList().add(new LeaderGroupVote(group2));
 
         groups.add(group1);
         groups.add(group2);

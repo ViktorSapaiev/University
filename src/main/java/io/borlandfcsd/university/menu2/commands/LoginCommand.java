@@ -5,7 +5,6 @@ import io.borlandfcsd.university.dao.ProfessorDao;
 import io.borlandfcsd.university.dao.StudentDao;
 import io.borlandfcsd.university.entity.Person;
 import io.borlandfcsd.university.menu2.Command;
-import io.borlandfcsd.university.menu2.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +17,6 @@ public class LoginCommand extends Command {
 
     public void run() {
         login();
-        addUserCommands();
-    }
-
-    private void addUserCommands() {
-        University.createUserMenu();
     }
 
     private void login(){

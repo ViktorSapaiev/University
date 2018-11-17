@@ -1,20 +1,16 @@
 package io.borlandfcsd.university.entity;
 
-import io.borlandfcsd.university.vote.VoteForGroupLeader;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Student extends Person {
     private List<String> traits;
-    private List<VoteForGroupLeader> voteList;
     private Group group;
 
     public Student(int id, String firstName, String lastName, String username, String password, Role role, List<String> traits) {
         super(id, firstName, lastName, role, username, password);
         this.traits = traits;
-        voteList = new ArrayList<>();
+
     }
 
     public List<String> getTraits() {
@@ -23,14 +19,6 @@ public class Student extends Person {
 
     public void setTraits(List<String> traits) {
         this.traits = traits;
-    }
-
-    public List<VoteForGroupLeader> getVoteList() {
-        return voteList;
-    }
-
-    public void setVoteList(List<VoteForGroupLeader> voteList) {
-        this.voteList = voteList;
     }
 
     public Group getGroup() {

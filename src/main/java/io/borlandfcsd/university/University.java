@@ -5,11 +5,9 @@ import io.borlandfcsd.university.dao.ProfessorDao;
 import io.borlandfcsd.university.dao.SubjectDao;
 import io.borlandfcsd.university.entity.*;
 import io.borlandfcsd.university.menu2.Menu;
-import io.borlandfcsd.university.menu.ProfileMenu;
-import io.borlandfcsd.university.menu.VoteMenu;
 import io.borlandfcsd.university.menu2.Command;
-import io.borlandfcsd.university.menu2.commands.CreateVoteCommand;
-import io.borlandfcsd.university.menu2.commands.LoginCommand;
+import io.borlandfcsd.university.menu2.commands.BeginVoteCommand;
+import io.borlandfcsd.university.menu2.commands.GetProfileCommand;
 import io.borlandfcsd.university.vote.Voteable;
 
 import java.util.ArrayList;
@@ -30,10 +28,13 @@ public class University {
 
     public static void createUserMenu(){
         Menu menu = Menu.getInstance();
+        menu.addUsersCommand(new GetProfileCommand());
         Student student = University.getCurrentStudent();
         if(student != null) {
-            menu.addUsersCommand(new CreateVoteCommand());
-            for (Voteable item : student.getVoteList()) {
+            if(student.getRole() == Role.LEADER && student.getGroup().getLeader() != null) {
+                menu.addUsersCommand(new BeginVoteCommand());
+            }
+            for (Voteable item : student.getGroup().getVoteList()) {
                 menu.addUsersCommand(new Command(item.getQuestion()) {
                     @Override
                     public void run() {
@@ -51,7 +52,7 @@ public class University {
 
     public static Student getCurrentStudent(){
         Student student = (Student)University.getInstance().getUser();
-        if(student.getRole() == Role.STUDENT){
+        if(student.getRole() == Role.STUDENT || student.getRole() == Role.LEADER){
             return student;
         } else {
             System.err.println("Current user is not student");
