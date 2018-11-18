@@ -1,4 +1,4 @@
-package io.borlandfcsd.university.menu2;
+package io.borlandfcsd.university.menu;
 
 public abstract class Command {
     private String title;

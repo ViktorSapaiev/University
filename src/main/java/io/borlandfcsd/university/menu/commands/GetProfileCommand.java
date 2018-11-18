@@ -1,8 +1,8 @@
-package io.borlandfcsd.university.menu2.commands;
+package io.borlandfcsd.university.menu.commands;
 
 import io.borlandfcsd.university.University;
 import io.borlandfcsd.university.entity.*;
-import io.borlandfcsd.university.menu2.Command;
+import io.borlandfcsd.university.menu.Command;
 
 public class GetProfileCommand extends Command {
     public GetProfileCommand() {

@@ -18,6 +18,9 @@ public class SubjectDao {
         subjects.add(new Subject(2,"Marketing"));
         subjects.add(new Subject(3,"English"));
         subjects.add(new Subject(4,"Robotics"));
+        subjects.add(new Subject(5, "Spanish"));
+        subjects.add(new Subject(6, "Physic"));
+        subjects.add(new Subject(7, "Anatomy"));
 
         for(Subject subject : subjects){
             int random = ThreadLocalRandom.current().nextInt(0, professors.size());

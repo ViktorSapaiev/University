@@ -1,10 +1,10 @@
-package io.borlandfcsd.university.menu2.commands;
+package io.borlandfcsd.university.menu.commands;
 
 import io.borlandfcsd.university.University;
 import io.borlandfcsd.university.dao.ProfessorDao;
 import io.borlandfcsd.university.dao.StudentDao;
 import io.borlandfcsd.university.entity.Person;
-import io.borlandfcsd.university.menu2.Command;
+import io.borlandfcsd.university.menu.Command;
 
 import java.util.ArrayList;
 import java.util.List;

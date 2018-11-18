@@ -4,15 +4,12 @@ import io.borlandfcsd.university.University;
 import io.borlandfcsd.university.entity.Group;
 import io.borlandfcsd.university.entity.Role;
 import io.borlandfcsd.university.entity.Student;
-import io.borlandfcsd.university.menu2.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class LeaderGroupVote implements Voteable{
-    private static int idCounter = 0;
-    private int id;
     private String question;
     private List<Answer<Student>> answers;
     private Group group;
@@ -22,7 +19,6 @@ public class LeaderGroupVote implements Voteable{
 
 
     public LeaderGroupVote(Group group) {
-        this.id = LeaderGroupVote.idCounter;
         this.group = group;
         this.question = "Who will be leader of group?(Round " + round +")";
 
@@ -43,23 +39,69 @@ public class LeaderGroupVote implements Voteable{
     }
 
     public void vote(){
-            if(checkVotedStudents()){
-                System.out.println("You already voted. Current results: ");
-                showResults();
-            } else {
-                System.out.println(question);
+        if (checkVotedStudents()) {
+            System.out.println("You already voted. Current results: ");
+            showResults();
+        } else {
+            System.out.println(question);
 
-                printAnswers();
+            printAnswers();
 
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter you answer: ");
-                int userAnswer = scanner.nextInt();
-                checkUserAnswer(userAnswer);
-                votedStudent.add(University.getCurrentStudent());
-                finishVoting();
-            }
-
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter you answer: ");
+            int userAnswer = scanner.nextInt();
+            addVoice(userAnswer);
+            finishVoting();
+        }
     }
+
+    private boolean checkVotedStudents() {
+        Student currentStudent = University.getCurrentStudent();
+        for (Student student : votedStudent) {
+            if (currentStudent != null) {
+                if (currentStudent.getUsername().equals(student.getUsername())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void showResults() {
+        for (Answer<Student> answer : answers) {
+            System.out.println(answer.getAnswer().getLastName() + " " + answer.getVoices());
+        }
+    }
+
+    private void printAnswers() {
+        int count = 0;
+        for (Answer answer : answers) {
+            Student student = (Student) answer.getAnswer();
+            System.out.println(
+                    count + " " + student.getFirstName()
+                            + " " + student.getLastName()
+            );
+            for (String trait : student.getTraits()) {
+                System.out.println(
+                        '\t' + trait
+                );
+            }
+            count++;
+        }
+    }
+
+    private void addVoice(int userAnswer) {
+        if (userAnswer >= 0 && userAnswer < answers.size()) {
+            answers.get(userAnswer).addVoice();
+            votedStudent.add(University.getCurrentStudent());
+            System.out.println("Your answer accept");
+            showResults();
+        } else {
+            System.err.println("Invalid answer, try again");
+            vote();
+        }
+    }
+
 
     private void finishVoting() {
         if(group.getStudents().size() == votedStudent.size()){
@@ -119,55 +161,10 @@ public class LeaderGroupVote implements Voteable{
         List<Voteable> votes = group.getVoteList();
         for(int i = 0; i< votes.size(); i++){
             Voteable vote = votes.get(i);
-            if (this.id == vote.getId()){
+            if (this == vote) {
                 votes.remove(i);
+                break;
             }
-        }
-    }
-
-    private boolean checkVotedStudents(){
-        Student currentStudent = University.getCurrentStudent();
-        for(Student student : votedStudent) {
-            if(currentStudent != null){
-                if (currentStudent.getUsername().equals(student.getUsername())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void printAnswers() {
-        int count = 0;
-        for (Answer answer : answers){
-            Student student = (Student)answer.getAnswer();
-            System.out.println(
-                    count + " " + student.getFirstName()
-                            + " " + student.getLastName()
-            );
-            for (String trait : student.getTraits()) {
-                System.out.println(
-                        '\t' + trait
-                );
-            }
-            count++;
-        }
-    }
-
-    private void checkUserAnswer(int userAnswer) {
-        if (userAnswer >= 0 && userAnswer < answers.size()){
-            answers.get(userAnswer).addVoice();
-            System.out.println("Your answer accept");
-            showResults();
-        } else {
-            System.out.println("Invalid answer, try again");
-            vote();
-        }
-    }
-
-    public void  showResults(){
-        for (Answer<Student> answer : answers){
-            System.out.println(answer.getAnswer().getLastName() + " " + answer.getVoices());
         }
     }
 
@@ -180,8 +177,4 @@ public class LeaderGroupVote implements Voteable{
         this.question = question;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
 }

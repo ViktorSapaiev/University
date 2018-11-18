@@ -1,9 +1,10 @@
-package io.borlandfcsd.university.menu2;
+package io.borlandfcsd.university.menu;
 
 import io.borlandfcsd.university.University;
-import io.borlandfcsd.university.menu2.commands.ExitCommand;
-import io.borlandfcsd.university.menu2.commands.LoginCommand;
-import io.borlandfcsd.university.menu2.commands.LogoutCommand;
+import io.borlandfcsd.university.menu.commands.ExitCommand;
+import io.borlandfcsd.university.menu.commands.LoginCommand;
+import io.borlandfcsd.university.menu.commands.LogoutCommand;
+import io.borlandfcsd.university.menu.utils.MenuUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +12,8 @@ import java.util.Scanner;
 
 public class Menu {
     private static final String MENU_PATTERN = "%s - %s\n";
-    private List<Command> systemCommands = new ArrayList<Command>();
-    private List<Command> userCommands = new ArrayList<Command>();
+    private List<Command> systemCommands = new ArrayList<>();
+    private List<Command> userCommands = new ArrayList<>();
     private boolean isExit = false;
 
     private Menu() {
@@ -43,8 +44,8 @@ public class Menu {
     }
 
     private void updateUserMenu() {
-        University.clearUserMenu();
-        University.createUserMenu();
+        MenuUtils.clearUserMenu();
+        MenuUtils.createUserMenu();
     }
 
     private void switchSystemCommand(boolean switcher) {
@@ -88,8 +89,8 @@ public class Menu {
         return true;
     }
 
-    public void addUsersCommand(Command entry) {
-        userCommands.add(entry);
+    public void addUsersCommand(Command command) {
+        userCommands.add(command);
     }
 
 

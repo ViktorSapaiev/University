@@ -3,14 +3,10 @@ package io.borlandfcsd.university;
 import io.borlandfcsd.university.dao.GroupDao;
 import io.borlandfcsd.university.dao.ProfessorDao;
 import io.borlandfcsd.university.dao.SubjectDao;
-import io.borlandfcsd.university.entity.*;
-import io.borlandfcsd.university.menu2.Menu;
-import io.borlandfcsd.university.menu2.Command;
-import io.borlandfcsd.university.menu2.commands.BeginVoteCommand;
-import io.borlandfcsd.university.menu2.commands.GetProfileCommand;
-import io.borlandfcsd.university.vote.Voteable;
-
-import java.util.ArrayList;
+import io.borlandfcsd.university.entity.Person;
+import io.borlandfcsd.university.entity.Professor;
+import io.borlandfcsd.university.entity.Student;
+import io.borlandfcsd.university.menu.Menu;
 
 public class University {
     private Person user;
@@ -22,40 +18,25 @@ public class University {
        SubjectDao subjectDao = SubjectDao.getInstance();
 
        Menu menu = Menu.getInstance();
-
        menu.run();
     }
 
-    public static void createUserMenu(){
-        Menu menu = Menu.getInstance();
-        menu.addUsersCommand(new GetProfileCommand());
-        Student student = University.getCurrentStudent();
-        if(student != null) {
-            if(student.getRole() == Role.LEADER && student.getGroup().getLeader() != null) {
-                menu.addUsersCommand(new BeginVoteCommand());
-            }
-            for (Voteable item : student.getGroup().getVoteList()) {
-                menu.addUsersCommand(new Command(item.getQuestion()) {
-                    @Override
-                    public void run() {
-                        item.vote();
-                    }
-                });
-            }
+    public static Student getCurrentStudent(){
+        Person person = University.getInstance().getUser();
+        if (person instanceof Student) {
+            return (Student) person;
+        } else {
+            System.err.println("Current user is not student");
+            return null;
         }
     }
 
-    public static void clearUserMenu(){
-        Menu menu = Menu.getInstance();
-        menu.setUserCommands(new ArrayList<>());
-    }
-
-    public static Student getCurrentStudent(){
-        Student student = (Student)University.getInstance().getUser();
-        if(student.getRole() == Role.STUDENT || student.getRole() == Role.LEADER){
-            return student;
+    public static Professor getCurrentProfessor() {
+        Person person = University.getInstance().getUser();
+        if (person instanceof Professor) {
+            return (Professor) person;
         } else {
-            System.err.println("Current user is not student");
+            System.err.println("Current user is not professor");
             return null;
         }
     }

@@ -1,7 +1,7 @@
-package io.borlandfcsd.university.menu2.commands;
+package io.borlandfcsd.university.menu.commands;
 
-import io.borlandfcsd.university.menu2.Command;
-import io.borlandfcsd.university.menu2.Menu;
+import io.borlandfcsd.university.menu.Command;
+import io.borlandfcsd.university.menu.Menu;
 
 public class ExitCommand extends Command {
     public ExitCommand() {

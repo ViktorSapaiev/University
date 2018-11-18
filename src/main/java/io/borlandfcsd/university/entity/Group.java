@@ -1,7 +1,4 @@
 package io.borlandfcsd.university.entity;
-
-
-import io.borlandfcsd.university.vote.LeaderGroupVote;
 import io.borlandfcsd.university.vote.Voteable;
 
 import java.util.ArrayList;
@@ -27,40 +24,16 @@ public class Group {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<Voteable> getVoteList() {
         return voteList;
     }
 
-    public void setVoteList(List<Voteable> voteList) {
-        this.voteList = voteList;
-    }
-
     public List<Student> getStudents() {
         return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
     }
 
     public Student getLeader() {
@@ -73,12 +46,23 @@ public class Group {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "id=" + id +
-                ", name=" + name +
-                ", students=" + students +
-                ", subjects=" + subjects +
-                ", leader=" + leader +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("\nGroup info:\n");
+        builder.append("\n\tName: ").append(name);
+        builder.append("\n\tleader: ");
+        if (leader != null) {
+            builder.append(leader.getFullName());
+        } else {
+            builder.append("[No leader]");
+        }
+        builder.append("\n\tStudents:\n");
+        for (int i = 0; i < students.size(); i++) {
+            builder.append("\t\t")
+                    .append(i + 1)
+                    .append(" ")
+                    .append(students.get(i).getFullName())
+                    .append('\n');
+        }
+        return builder.toString();
     }
 }
